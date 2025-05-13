@@ -26,6 +26,10 @@ public class DbConfig {
 	 */
 	public static Connection getDbConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+
 		return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		
 	}
+	
 }

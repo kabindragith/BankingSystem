@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * author Kabindra Bikram Karki 23048578
  */
-@WebServlet(asyncSupported = true, urlPatterns = { "/home" })
+@WebServlet(asyncSupported = true, urlPatterns = { "/", "/home" })
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

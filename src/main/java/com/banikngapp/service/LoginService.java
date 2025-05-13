@@ -28,9 +28,9 @@ public class LoginService {
             return null;
         }
 
-        String query = "SELECT * FROM user WHERE email = ?";
+        String query = "SELECT * FROM user WHERE username = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, user.getEmail());
+            stmt.setString(1, user.getUsername());
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -46,9 +46,14 @@ public class LoginService {
 
     private boolean validatePassword(ResultSet result, UserModel user) throws SQLException {
         String dbPassword = result.getString("password");
-        String dbEmail = result.getString("email");
+        String dbUsername = result.getString("username");
 
-        String decryptedPassword = PasswordUtil.decrypt(dbPassword, dbEmail);
+        String decryptedPassword = PasswordUtil.decrypt(dbPassword, dbUsername);
+        if (decryptedPassword == null) {
+            // Handle the error, perhaps logging or throwing a custom exception
+            throw new IllegalArgumentException("Decryption failed. The password is null.");
+        }
+
 
         return decryptedPassword.equals(user.getPassword());
     }
