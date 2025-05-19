@@ -87,10 +87,13 @@
           <li class="nav-item"><a href="#" class="nav-link">About Us</a></li>
           <li class="nav-item"><a href="#" class="nav-link">Contact Us</a></li>
         </ul>
-        <div class="user-menu">
+        <div class="user-menu" style="display:flex;">
+        <a>${user.firstName}        .</a>
           <div class="user-avatar">
-            ${fn:substring(user.firstName, 0, 1)}${fn:substring(user.lastName, 0, 1)}
+                  <img src="${pageContext.request.contextPath}/resources/images/user/${user.imageUrl}" alt="Profile Image" style="border-radius: 50%; width: 50px; height: 50px;"/>
+                  
           </div>
+          
         </div>
       </nav>
     </div>
@@ -216,6 +219,7 @@
 
               <div class="panel-footer" style="margin-top: 1rem;">
                 <button type="submit" class="btn">Save Changes</button>
+                <a class="btn" href="${pageContext.request.contextPath}/logout" style="background-color:red;">Log Out</a>
               </div>
             </form>
           </div>

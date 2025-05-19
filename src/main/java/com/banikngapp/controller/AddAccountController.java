@@ -36,7 +36,7 @@ public class AddAccountController extends HttpServlet {
             String username = (String) session.getAttribute("username");
 
             if (username == null) {
-                response.sendRedirect("login.jsp");
+                response.sendRedirect(request.getContextPath() + "/login"); // Redirect to login if no session
                 return;
             }
 
@@ -45,25 +45,28 @@ public class AddAccountController extends HttpServlet {
             String nickname = request.getParameter("nickname");
 
             UserAccountsModel model = new UserAccountsModel(
-                initialBalance,
-                initialBalance,
-                LocalDateTime.now(),
-                0, // dummy userId, real one fetched in service
-                0, // dummy accountId, real one fetched in service
-                nickname
+                    initialBalance,
+                    initialBalance,
+                    LocalDateTime.now(),
+                    0, // dummy userId, real one fetched in service
+                    0, // dummy accountId, real one fetched in service
+                    nickname
             );
 
             AddAccountService service = new AddAccountService();
             boolean success = service.createAccount(model, username, accountType);
 
             if (success) {
-                handleSuccess(request, response, "Account added successfully!", "/WEB-INF/pages/useraccounts.jsp");
+                handleSuccess(request, response, "Account added successfully!", "/useraccounts");
             } else {
                 handleError(request, response, "Failed to add account. Please try again.");
             }
 
+        } catch (NumberFormatException e) {
+            handleError(request, response, "Invalid initial balance format.");
         } catch (Exception e) {
-            handleError(request, response, "An unexpected error occurred.");
+            handleError(request, response, "An unexpected error occurred: " + e.getMessage());
+            e.printStackTrace(); // Log the error for debugging
         }
     }
 
@@ -75,7 +78,7 @@ public class AddAccountController extends HttpServlet {
 
     private void handleSuccess(HttpServletRequest req, HttpServletResponse resp, String message, String redirectPage)
             throws ServletException, IOException {
-        req.setAttribute("success", message);
-        req.getRequestDispatcher(redirectPage).forward(req, resp);
+        req.getSession().setAttribute("message", message); // Use session to pass success message
+        resp.sendRedirect(req.getContextPath() + redirectPage); // Use sendRedirect for browser redirect
     }
 }

@@ -83,15 +83,15 @@
 				<div class="form-grid">
 					<!-- Personal Information -->
 					<div class="form-group">
-						<label for="first-name">First Name</label> <input type="text"
-							id="first-name" name="first-name" class="form-input"
-							placeholder="Enter your first name" required />
+						<label for="first-name">First Name</label>
+						<input type="text" id="first-name" name="first-name" class="form-input"
+							placeholder="Enter your first name" value="${param['first-name']}" required />
 					</div>
 
 					<div class="form-group">
-						<label for="last-name">Last Name</label> <input type="text"
-							id="last-name" name="last-name" class="form-input"
-							placeholder="Enter your last name" required />
+						<label for="last-name">Last Name</label>
+						<input type="text" id="last-name" name="last-name" class="form-input"
+							placeholder="Enter your last name" value="${param['last-name']}" required />
 					</div>
 
 					<div class="form-group">
@@ -99,54 +99,58 @@
 						<div class="radio-group">
 							<div class="radio-option">
 								<input type="radio" id="male" name="gender" value="male"
-									required /> <label for="male">Male</label>
+									${param.gender == 'male' ? 'checked' : ''} required />
+								<label for="male">Male</label>
 							</div>
 							<div class="radio-option">
-								<input type="radio" id="female" name="gender" value="female" />
+								<input type="radio" id="female" name="gender" value="female"
+									${param.gender == 'female' ? 'checked' : ''} />
 								<label for="female">Female</label>
 							</div>
 							<div class="radio-option">
-								<input type="radio" id="other" name="gender" value="other" /> <label
-									for="other">Other</label>
+								<input type="radio" id="other" name="gender" value="other"
+									${param.gender == 'other' ? 'checked' : ''} />
+								<label for="other">Other</label>
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label for="dob">Date of Birth</label> <input type="date" id="dob" name="dob"
-							class="form-input" required />
+						<label for="dob">Date of Birth</label>
+						<input type="date" id="dob" name="dob" class="form-input"
+							value="${param.dob}" required />
 					</div>
 
 					<div class="form-group">
-						<label for="phone">Phone Number</label> <input type="tel"
-							id="phone" class="form-input" name="phone"
-							placeholder="Enter your phone number" required />
+						<label for="phone">Phone Number</label>
+						<input type="tel" id="phone" class="form-input" name="phone"
+							placeholder="Enter your phone number" value="${param.phone}" required />
 					</div>
 
 					<div class="form-group">
-						<label for="address">Address</label> <input type="text"
-							id="address" class="form-input" name="address"
-							placeholder="Enter your full address" required />
+						<label for="address">Address</label>
+						<input type="text" id="address" class="form-input" name="address"
+							placeholder="Enter your full address" value="${param.address}" required />
 					</div>
 
 					<div class="form-group">
-						<label for="email">Email Address</label> <input type="email"
-							id="email" class="form-input" name="email"
-							placeholder="Enter your email address" required />
+						<label for="email">Email Address</label>
+						<input type="email" id="email" class="form-input" name="email"
+							placeholder="Enter your email address" value="${param.email}" required />
 					</div>
 
 					<div class="form-group">
-						<label for="username">Username</label> <input type="text"
-							id="username" class="form-input" name="username" placeholder="Choose a username"
-							required />
+						<label for="username">Username</label>
+						<input type="text" id="username" class="form-input" name="username"
+							placeholder="Choose a username" value="${param.username}" required />
 					</div>
 
 					<div class="form-group">
 						<label for="password">Password</label>
 						<div class="password-toggle">
 							<input type="password" id="password" name="password" class="form-input"
-								placeholder="Create a password" required /> <span
-								class="password-toggle-icon">👁️</span>
+								placeholder="Create a password" required />
+							<span class="password-toggle-icon">👁️</span>
 						</div>
 					</div>
 
@@ -160,38 +164,39 @@
 					</div>
 
 					<div class="form-group">
-						<label for="account-type">Bank Account Type</label> <select
-							id="account-type" class="account-type-select" name="account-type" required>
-							<option value="" disabled selected>Select account type</option>
-							<option value="savings">Savings Account</option>
-							<option value="checking">Checking Account</option>
-							<option value="business">Business Account</option>
-							<option value="student">Student Account</option>
+						<label for="account-type">Bank Account Type</label>
+						<select id="account-type" class="account-type-select" name="account-type" required>
+							<option value="" disabled ${param['account-type'] == '' ? 'selected' : ''}>Select account type</option>
+							<option value="savings" ${param['account-type'] == 'savings' ? 'selected' : ''}>Savings Account</option>
+							<option value="checking" ${param['account-type'] == 'checking' ? 'selected' : ''}>Checking Account</option>
+							<option value="business" ${param['account-type'] == 'business' ? 'selected' : ''}>Business Account</option>
+							<option value="student" ${param['account-type'] == 'student' ? 'selected' : ''}>Student Account</option>
 						</select>
 					</div>
 
 					<div class="form-group">
-						<label for="initial-balance">Initial Balance ($)</label> <input
-							type="number" id="initial-balance" class="form-input" name="initial-balance"
-							placeholder="Minimum $100" min="100" step="0.01" required />
+						<label for="initial-balance">Initial Balance ($)</label>
+						<input type="number" id="initial-balance" class="form-input" name="initial-balance"
+							placeholder="Minimum $100" min="100" step="0.01" value="${param['initial-balance']}" required />
 					</div>
 					
 					<div class="form-group">
-						<label for="nickname">Account Nick Name</label> <input type="text"
-							id="nickname" class="form-input" name="nickname" placeholder="Choose a username"
-							required />
+						<label for="nickname">Account Nick Name</label>
+						<input type="text" id="nickname" class="form-input" name="nickname"
+							placeholder="Choose a nickname" value="${param.nickname}" required />
 					</div>
 
 					<div class="form-group">
-						<label for="profile-picture">Upload Profile Picture</label> <input
-							type="file" id="profile-picture" class="form-input" name="profileImage"
-							accept="image/*" /> <span class="file-input-label">Supported
-							formats: JPG, PNG. Max size: 5MB</span>
+						<label for="profile-picture">Upload Profile Picture</label>
+						<input type="file" id="profile-picture" class="form-input" name="profileImage"
+							accept="image/*" />
+						<span class="file-input-label">Supported formats: JPG, PNG. Max size: 5MB</span>
 					</div>
 
 					<div class="form-group full-width">
 						<div class="terms-checkbox">
-							<input type="checkbox" id="terms" required /> <label for="terms">
+							<input type="checkbox" id="terms" ${param.terms != null ? 'checked' : ''} required />
+							<label for="terms">
 								I agree to the SecureBank <a href="#"
 								style="color: var(--secondary-color)">Terms
 									of Service</a> and <a href="#"
@@ -263,16 +268,17 @@
 					<li>123 Banking Street, Financial District</li>
 				</ul>
 				<div class="social-links">
-					<a href="#" class="social-icon">📱</a> <a href="#"
-						class="social-icon">📘</a> <a href="#" class="social-icon">🐦</a>
-					<a href="#" class="social-icon">📸</a> <a href="#"
-						class="social-icon">🔗</a>
+					<a href="#" class="social-icon">📱</a>
+					<a href="#" class="social-icon">📘</a>
+					<a href="#" class="social-icon">🐦</a>
+					<a href="#" class="social-icon">📸</a>
+					<a href="#" class="social-icon">🔗</a>
 				</div>
 			</div>
 		</div>
 
 		<div class="footer-bottom">
-			<p>&copy; 2025 SecureBank. All rights reserved.</p>
+			<p>© 2025 SecureBank. All rights reserved.</p>
 			<p>Privacy Policy | Terms of Service | Cookie Policy |
 				Accessibility | Site Map</p>
 		</div>

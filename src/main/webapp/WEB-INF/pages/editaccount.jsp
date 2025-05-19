@@ -20,7 +20,6 @@
     </style>
   </head>
   <body>
-    <!-- HEADER -->
     <header class="header">
       <div class="header-content">
         <div class="logo">
@@ -52,9 +51,7 @@
       </div>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main class="container">
-      <!-- Message Display -->
       <c:if test="${not empty sessionScope.message}">
         <div class="message">
           <c:out value="${sessionScope.message}" />
@@ -74,7 +71,9 @@
       </div>
 
       <form id="edit-account-form" action="${contextPath}/editaccount" method="POST">
+        <input type="hidden" name="action" value="updateDetails" />
         <input type="hidden" name="user_id" value="${account.userId}" />
+        <input type="hidden" name="account_id" value="${account.model.accountId}" /> <%-- Changed to access accountId from model --%>
         <input type="hidden" name="account_type_id" value="${account.accountTypeId}" />
         <div class="form-card">
           <div class="form-section">
@@ -111,6 +110,7 @@
               <div
                 class="account-type-card ${account.accountType == 'Checking Account' ? 'selected' : ''}"
                 onclick="selectAccountType(this, 'checking')"
+                data-type="checking"
               >
                 <div class="account-type-icon">
                   <i class="fas fa-credit-card"></i>
@@ -124,6 +124,7 @@
               <div
                 class="account-type-card ${account.accountType == 'Savings Account' ? 'selected' : ''}"
                 onclick="selectAccountType(this, 'savings')"
+                data-type="savings"
               >
                 <div class="account-type-icon">
                   <i class="fas fa-piggy-bank"></i>
@@ -134,7 +135,7 @@
                 </div>
               </div>
 
-              <div class="account-type-card ${account.accountType == 'Investment' ? 'selected' : ''}">
+              <div class="account-type-card ${account.accountType == 'Investment' ? 'selected' : ''} " data-type="investment">
                 <div class="account-type-icon">
                   <i class="fas fa-chart-line"></i>
                 </div>
@@ -172,16 +173,17 @@
             </div>
 
             <div class="form-group">
-              <label>Current Balance</label>
+              <label for="currentBalance">Current Balance</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 id="currentBalance"
-                value="$<fmt:formatNumber value="${account.model.currentBalance}" pattern="#,##0.00" />"
-                readonly
+                name="currentBalance"
+                value="${account.model.currentBalance}"
+                step="0.01"
               />
               <span class="form-helper"
-                >This is the current balance of your account</span>
+                >Edit the current balance of your account</span>
             </div>
 
             <div class="form-group">
@@ -267,7 +269,6 @@
       </form>
     </main>
 
-    <!-- CLOSE ACCOUNT MODAL -->
     <div class="modal-overlay" id="closeAccountModal">
       <div class="modal">
         <div class="modal-header">
@@ -284,6 +285,7 @@
           <form id="closeAccountForm" action="${contextPath}/editaccount" method="POST">
             <input type="hidden" name="action" value="closeAccount" />
             <input type="hidden" name="user_id" value="${account.userId}" />
+            <input type="hidden" name="account_id" value="${account.model.accountId}" /> <%-- Changed to access accountId from model --%>
             <input type="hidden" name="account_type_id" value="${account.accountTypeId}" />
             <div class="form-group" style="margin-top: 1rem">
               <label for="closeReason">Please tell us why you're closing this account:</label>
@@ -311,7 +313,6 @@
       </div>
     </div>
 
-    <!-- FOOTER -->
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-section">

@@ -1,337 +1,345 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SecureTrust Bank - Home</title>
-    <link rel="stylesheet"
-        href="${pageContext.request.contextPath}/css/userdash.css" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SecureBank - User Dashboard</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/userdashboard.css">
+<style>
+.message {
+	padding: 1rem;
+	margin: 1rem 2rem;
+	border-radius: 4px;
+	background-color: rgba(22, 163, 74, 0.1);
+	color: var(--success-color);
+	border: 1px solid var(--success-color);
+	text-align: center;
+}
+
+.message.error {
+	background-color: rgba(220, 38, 38, 0.1);
+	color: var(--error-color);
+	border-color: var(--error-color);
+}
+
+@media ( max-width : 768px) {
+	.transactions-table {
+		display: block;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+}
+
+.user-avatar img {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid #ddd;
+}
+
+.user-avatar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 10px;
+}
+
+.delete-btn {
+	background: none;
+	border: none;
+	font-size: 1.2rem;
+	cursor: pointer;
+	color: #dc2626;
+	transition: transform 0.2s;
+}
+
+.delete-btn:hover {
+	transform: scale(1.2);
+}
+</style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <div class="header-left">
-                <img src="${pageContext.request.contextPath}/resources/bank-logo.png" alt="Bank Logo" class="logo" />
-                <h1>SecureTrust Bank</h1>
-            </div>
-            <div class="header-right">
-                <div class="user-profile">
-                    <img src="${pageContext.request.contextPath}/resources/profile-pictures/${user.profileImage}" 
-                         alt="Profile" class="profile-pic" />
-                    <span class="username">User</span>
-                    <i class="fas fa-chevron-down dropdown-icon"></i>
-                    <div class="dropdown-menu">
-                        <a href="${pageContext.request.contextPath}/profile"><i class="fas fa-user"></i> Profile</a>
-                        <a href="${pageContext.request.contextPath}/settings"><i class="fas fa-cog"></i> Settings</a>
-                        <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    </div>
-                </div>
-                <div class="notifications">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-count">3</span>
-                </div>
-            </div>
-        </header>
+	<aside class="sidebar">
+		<div class="sidebar-header">
+			<div class="logo">
+				<span class="logo-icon">🏦</span> <span class="logo-text">SecureBank</span>
+			</div>
+		</div>
+		<div class="user-profile">
+			<div class="user-avatar">
+				<c:choose>
+					<c:when test="${not empty user and not empty user.imageUrl}">
+						<img
+							src="${pageContext.request.contextPath}/resources/images/user/${user.imageUrl}"
+							alt="User Profile Image" />
+					</c:when>
+					<c:otherwise>
+						<img
+							src="${pageContext.request.contextPath}/resources/images/user/default-profile.png"
+							alt="Default Avatar" />
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<div class="user-info">
+				<h4>
+					<c:choose>
+						<c:when test="${not empty user}">
+							<c:out value="${user.firstName} ${user.lastName}" />
+						</c:when>
+						<c:otherwise>Guest User</c:otherwise>
+					</c:choose>
+				</h4>
+				<p>Account Holder</p>
+			</div>
+		</div>
+		<nav class="nav-menu">
+			<div class="nav-section">
+				<h5 class="nav-section-title">Main</h5>
+				<ul class="nav-list">
+					<li class="nav-item"><a
+						href="${pageContext.request.contextPath}/userdashboard"
+						class="nav-link active"> <span class="nav-link-icon">📊</span>
+							<span class="nav-link-text">Dashboard</span>
+					</a></li>
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">💰</span><span class="nav-link-text">Accounts</span></a></li>
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">💸</span><span class="nav-link-text">Transactions</span></a></li>
+				</ul>
+			</div>
+			<div class="nav-section">
+				<h5 class="nav-section-title">Services</h5>
+				<ul class="nav-list">
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">💳</span><span class="nav-link-text">Cards</span></a></li>
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">🏛️</span><span class="nav-link-text">Loans</span></a></li>
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">📈</span><span class="nav-link-text">Investments</span></a></li>
+				</ul>
+			</div>
+			<div class="nav-section">
+				<h5 class="nav-section-title">Account</h5>
+				<ul class="nav-list">
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">👤</span><span class="nav-link-text">Profile</span></a></li>
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">⚙️</span><span class="nav-link-text">Settings</span></a></li>
+					<li class="nav-item"><a href="#" class="nav-link"><span
+							class="nav-link-icon">🔒</span><span class="nav-link-text">Security</span></a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout-section">
+			<button class="logout-btn">
+				<span class="logout-icon">🚪</span><span class="logout-text">Log
+					Out</span>
+			</button>
+		</div>
+	</aside>
 
-        <!-- Sidebar Navigation -->
-        <nav class="dashboard-sidebar">
-            <ul class="sidebar-menu">
-                <li class="active">
-                    <a href="${pageContext.request.contextPath}/dashboard">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/accounts">
-                        <i class="fas fa-wallet"></i>
-                        <span>Accounts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/transactions">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>Transactions</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/transfer">
-                        <i class="fas fa-paper-plane"></i>
-                        <span>Send Money</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/profile">
-                        <i class="fas fa-user"></i>
-                        <span>Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/support">
-                        <i class="fas fa-headset"></i>
-                        <span>Support</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+	<div class="main-content">
+		<header class="header">
+			<h1 class="page-title">User Dashboard</h1>
+			<div class="header-actions">
+				<div class="search-bar">
+					<span class="search-icon">🔍</span> <input type="text"
+						class="search-input" placeholder="Search..." />
+				</div>
+				<button class="notification-btn">
+					🔔<span class="notification-count">3</span>
+				</button>
+				<button class="settings-btn">⚙️</button>
+			</div>
+		</header>
 
-        <!-- Main Content -->
-        <main class="dashboard-content">
-            <div class="content-header">
-                <h2>Dashboard</h2>
-                <div class="breadcrumb">
-                    <a href="${pageContext.request.contextPath}/dashboard">Home</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Dashboard</span>
-                </div>
-            </div>
+		<c:if test="${not empty sessionScope.message}">
+			<div
+				class="message ${sessionScope.messageType == 'error' ? 'error' : ''}">
+				<c:out value="${sessionScope.message}" />
+				<c:remove var="message" scope="session" />
+				<c:remove var="messageType" scope="session" />
+			</div>
+		</c:if>
 
-            <!-- Welcome Card -->
-            <div class="welcome-card">
-                <div class="welcome-content">
-                    <h3>Welcome back, User!</h3>
-                    <p>Here's what's happening with your accounts today.</p>
-                    <div class="last-login">
-                        <i class="fas fa-clock"></i>
-                        Last login:
-                    </div>
-                </div>
-                <div class="welcome-image">
-                    <img src="${pageContext.request.contextPath}/resources/dashboard-welcome.png" alt="Welcome" />
-                </div>
-            </div>
+		<div class="dashboard-content">
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-icon">💰</div>
+					<div class="stat-info">
+						<h3 class="stat-title">Total Balance</h3>
+						<p class="stat-value">
+							<c:choose>
+								<c:when test="${totalBalance != null}">
+                                $<fmt:formatNumber
+										value="${totalBalance}" type="number" minFractionDigits="2"
+										maxFractionDigits="2" />
+								</c:when>
+								<c:otherwise>$0.00</c:otherwise>
+							</c:choose>
+						</p>
+					</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-icon">🏦</div>
+					<div class="stat-info">
+						<h3 class="stat-title">Number of Accounts</h3>
+						<p class="stat-value">
+							<c:out
+								value="${numberOfAccounts != null ? numberOfAccounts : '0'}" />
+						</p>
+					</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-icon">💵</div>
+					<div class="stat-info">
+						<h3 class="stat-title">Savings Balance</h3>
+						<p class="stat-value">
+							<c:choose>
+								<c:when test="${savingsBalance != null}">
+                                $<fmt:formatNumber
+										value="${savingsBalance}" type="number" minFractionDigits="2"
+										maxFractionDigits="2" />
+								</c:when>
+								<c:otherwise>$0.00</c:otherwise>
+							</c:choose>
+						</p>
+					</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-icon">💸</div>
+					<div class="stat-info">
+						<h3 class="stat-title">Checking Balance</h3>
+						<p class="stat-value">
+							<c:choose>
+								<c:when test="${checkingBalance != null}">
+                                $<fmt:formatNumber
+										value="${checkingBalance}" type="number" minFractionDigits="2"
+										maxFractionDigits="2" />
+								</c:when>
+								<c:otherwise>$0.00</c:otherwise>
+							</c:choose>
+						</p>
+					</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-icon">📈</div>
+					<div class="stat-info">
+						<h3 class="stat-title">Investment Balance</h3>
+						<p class="stat-value">
+							<c:choose>
+								<c:when test="${investmentBalance != null}">
+                                $<fmt:formatNumber
+										value="${investmentBalance}" type="number"
+										minFractionDigits="2" maxFractionDigits="2" />
+								</c:when>
+								<c:otherwise>$0.00</c:otherwise>
+							</c:choose>
+						</p>
+					</div>
+				</div>
+			</div>
 
-            <!-- Quick Stats -->
-            <div class="quick-stats">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(76, 161, 175, 0.1);">
-                        <i class="fas fa-wallet" style="color: #4ca1af;"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>Total Balance</h4>
-                        <p>$7593450</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(52, 152, 219, 0.1);">
-                        <i class="fas fa-exchange-alt" style="color: #3498db;"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>Transactions</h4>
-                        <p>69</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(46, 204, 113, 0.1);">
-                        <i class="fas fa-piggy-bank" style="color: #2ecc71;"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>Savings</h4>
-                        <p>$89000</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(231, 76, 60, 0.1);">
-                        <i class="fas fa-credit-card" style="color: #e74c3c;"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>Due Payments</h4>
-                        <p>0</p>
-                    </div>
-                </div>
-            </div>
+			<div class="card">
+				<div class="card-header">
+					<h2 class="card-title">My Accounts</h2>
+					<div class="card-actions">
+						<button class="card-action-btn active">All</button>
+						<button class="card-action-btn">Savings</button>
+						<button class="card-action-btn">Checking</button>
+						<button class="card-action-btn">Investment</button>
+					</div>
+				</div>
+				<div class="card-content">
+					<table class="transactions-table">
+						<thead>
+							<tr>
+								<th>Nickname</th>
+								<th>Account Type</th>
+								<th>Initial Balance</th>
+								<th>Current Balance</th>
+								<th>Created At</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:choose>
+								<c:when test="${not empty userAccounts}">
+									<c:forEach var="accountEntry" items="${userAccounts}">
+										<tr>
+											<td><c:out
+													value="${accountEntry.userAccountModel.nickname}" /></td>
+											<td><c:out
+													value="${accountEntry.accountModel.accountType}" /></td>
+											<td>$<fmt:formatNumber
+													value="${accountEntry.userAccountModel.initialBalance}"
+													type="number" minFractionDigits="2" maxFractionDigits="2" /></td>
+											<td>$<fmt:formatNumber
+													value="${accountEntry.userAccountModel.currentBalance}"
+													type="number" minFractionDigits="2" maxFractionDigits="2" /></td>
+											<td><fmt:formatDate
+													value="${accountEntry.createdAtDate}" pattern="MM/dd/yyyy" /></td>
+											<td>
+												<form
+													action="${pageContext.request.contextPath}/userdashboard"
+													method="post"
+													onsubmit="return confirm('Are you sure you want to delete this account?');">
+													<input type="hidden" name="action" value="deleteAccount" />
+													<input type="hidden" name="account_id"
+														value="${accountEntry.userAccountModel.accountId}" />
+													<button type="submit" class="delete-btn">🗑️</button>
+												</form>
+											</td>
+										</tr>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<tr>
+										<td colspan="6" class="no-data">No accounts found.</td>
+									</tr>
+								</c:otherwise>
+							</c:choose>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
-            <!-- Dashboard Grid -->
-            <div class="dashboard-grid">
-                <!-- Recent Transactions -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h4>Recent Transactions</h4>
-                        <a href="${pageContext.request.contextPath}/transactions" class="view-all">View All</a>
-                    </div>
-                    <div class="transactions-list">
-                        <div class="transaction-item">
-                            <div class="transaction-icon">
-                                <i class="fas fa-arrow-down" style="color: #2ecc71;"></i>
-                            </div>
-                            <div class="transaction-details">
-                                <div class="transaction-info">
-                                    <h5>Salary Deposit</h5>
-                                    <p class="transaction-date">Today, 10:45 AM</p>
-                                </div>
-                                <div class="transaction-amount positive">
-                                    +$3,250.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-icon">
-                                <i class="fas fa-arrow-up" style="color: #e74c3c;"></i>
-                            </div>
-                            <div class="transaction-details">
-                                <div class="transaction-info">
-                                    <h5>Grocery Store</h5>
-                                    <p class="transaction-date">Yesterday, 5:30 PM</p>
-                                </div>
-                                <div class="transaction-amount negative">
-                                    -$86.45
-                                </div>
-                            </div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-icon">
-                                <i class="fas fa-exchange-alt" style="color: #3498db;"></i>
-                            </div>
-                            <div class="transaction-details">
-                                <div class="transaction-info">
-                                    <h5>Transfer to John</h5>
-                                    <p class="transaction-date">Yesterday, 2:15 PM</p>
-                                </div>
-                                <div class="transaction-amount negative">
-                                    -$200.00
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+		<footer class="footer">
+			<div class="copyright">© 2025 SecureBank User Panel. All rights
+				reserved.</div>
+			<div class="footer-links">
+				<a href="#">Privacy Policy</a> <a href="#">Terms of Service</a> <a
+					href="#">Help & Support</a>
+			</div>
+		</footer>
+	</div>
 
-                <!-- Accounts Summary -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h4>Your Accounts</h4>
-                        <a href="${pageContext.request.contextPath}/accounts" class="view-all">View All</a>
-                    </div>
-                    <div class="accounts-list">
-                        <div class="account-item">
-                            <div class="account-icon">
-                                <i class="fas fa-wallet" style="color: #4ca1af;"></i>
-                            </div>
-                            <div class="account-info">
-                                <h5>Main Account</h5>
-                                <p>•••• 4567</p>
-                            </div>
-                            <div class="account-balance">
-                                $8,245.50
-                            </div>
-                        </div>
-                        <div class="account-item">
-                            <div class="account-icon">
-                                <i class="fas fa-piggy-bank" style="color: #2ecc71;"></i>
-                            </div>
-                            <div class="account-info">
-                                <h5>Savings</h5>
-                                <p>•••• 8912</p>
-                            </div>
-                            <div class="account-balance">
-                                $12,500.00
-                            </div>
-                        </div>
-                        <div class="account-item">
-                            <div class="account-icon">
-                                <i class="fas fa-dollar-sign" style="color: #3498db;"></i>
-                            </div>
-                            <div class="account-info">
-                                <h5>Investment</h5>
-                                <p>•••• 3456</p>
-                            </div>
-                            <div class="account-balance">
-                                $25,340.75
-                            </div>
-                        </div>
-                    </div>
-                </div>
+	<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach(link => {
+            link.addEventListener("click", function() {
+                navLinks.forEach(item => item.classList.remove("active"));
+                this.classList.add("active");
+            });
+        });
 
-                <!-- Quick Actions -->
-                <div class="dashboard-card quick-actions">
-                    <div class="card-header">
-                        <h4>Quick Actions</h4>
-                    </div>
-                    <div class="actions-grid">
-                        <a href="${pageContext.request.contextPath}/transfer" class="action-card">
-                            <div class="action-icon" style="background: rgba(76, 161, 175, 0.1);">
-                                <i class="fas fa-paper-plane" style="color: #4ca1af;"></i>
-                            </div>
-                            <h5>Send Money</h5>
-                        </a>
-                        <a href="#" class="action-card">
-                            <div class="action-icon" style="background: rgba(46, 204, 113, 0.1);">
-                                <i class="fas fa-mobile-alt" style="color: #2ecc71;"></i>
-                            </div>
-                            <h5>Pay Bills</h5>
-                        </a>
-                        <a href="#" class="action-card">
-                            <div class="action-icon" style="background: rgba(155, 89, 182, 0.1);">
-                                <i class="fas fa-chart-line" style="color: #9b59b6;"></i>
-                            </div>
-                            <h5>Investments</h5>
-                        </a>
-                        <a href="#" class="action-card">
-                            <div class="action-icon" style="background: rgba(52, 152, 219, 0.1);">
-                                <i class="fas fa-credit-card" style="color: #3498db;"></i>
-                            </div>
-                            <h5>Cards</h5>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Spending Overview -->
-                <div class="dashboard-card spending-overview">
-                    <div class="card-header">
-                        <h4>Spending Overview</h4>
-                        <div class="time-filter">
-                            <select>
-                                <option>This Month</option>
-                                <option>Last Month</option>
-                                <option>Last 3 Months</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="spending-chart">
-                        <!-- Chart would be implemented with Chart.js or similar -->
-                        <div class="chart-placeholder">
-                            <img src="${pageContext.request.contextPath}/resources/spending-chart.png" alt="Spending Chart" />
-                        </div>
-                        <div class="spending-categories">
-                            <div class="category">
-                                <span class="color-dot" style="background: #4ca1af;"></span>
-                                <span>Food & Dining</span>
-                                <span>$420.50</span>
-                            </div>
-                            <div class="category">
-                                <span class="color-dot" style="background: #2ecc71;"></span>
-                                <span>Shopping</span>
-                                <span>$320.00</span>
-                            </div>
-                            <div class="category">
-                                <span class="color-dot" style="background: #3498db;"></span>
-                                <span>Transportation</span>
-                                <span>$150.75</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="dashboard-footer">
-            <div class="footer-content">
-                <div class="footer-left">
-                    <p>&copy; 2025 SecureTrust Bank. All rights reserved.</p>
-                </div>
-                <div class="footer-right">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Security</a>
-                    <a href="#">Contact Us</a>
-                </div>
-            </div>
-        </footer>
-    </div>
+        const cardActionBtns = document.querySelectorAll(".card-action-btn");
+        cardActionBtns.forEach(btn => {
+            btn.addEventListener("click", function() {
+                const parentActions = this.parentElement;
+                parentActions.querySelectorAll(".card-action-btn").forEach(item => item.classList.remove("active"));
+                this.classList.add("active");
+            });
+        });
+    });
+</script>
 </body>
 </html>

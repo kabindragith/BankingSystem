@@ -14,7 +14,7 @@
 //@WebFilter(urlPatterns = "/*")
 //public class AuthenticationFilter implements Filter {
 //
-//    private static final List<String> PUBLIC_PATHS = Arrays.asList("/login", "/register", "/", "/about", "/portfolio", "/contact");
+//    private static final List<String> PUBLIC_PATHS = Arrays.asList("/login", "/register", "/", "/aboutus", "/contactus","/home");
 //    private static final List<String> STATIC_EXTENSIONS = Arrays.asList(".css", ".js", ".png", ".jpg", ".jpeg", ".webp", ".svg", ".woff", ".woff2");
 //
 //    @Override

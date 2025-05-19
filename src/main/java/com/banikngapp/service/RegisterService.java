@@ -95,12 +95,11 @@ public class RegisterService {
 			int accountId = result1.next() ? result1.getInt("account_type_id") : 1;
 
 			// Insert into user_accounts
-			insertStmt.setInt(1, userId);
-			insertStmt.setInt(2, accountId);
-			insertStmt.setInt(3, userId); // using userId as account_number?
-			insertStmt.setDouble(4, userModel.getInitialBalance());
-			insertStmt.setDouble(5, userModel.getCurrentBalance());
-			insertStmt.setString(6, userModel.getNickname());
+			insertStmt.setInt(1, accountId);
+			insertStmt.setInt(2, userId); // using userId as account_number?
+			insertStmt.setDouble(3, userModel.getInitialBalance());
+			insertStmt.setDouble(4, userModel.getCurrentBalance());
+			insertStmt.setString(5, userModel.getNickname());
 
 			return insertStmt.executeUpdate() > 0;
 

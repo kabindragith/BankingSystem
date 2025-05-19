@@ -37,25 +37,34 @@
 			</div>
 
 			<form action="login" method="POST" id="login-form">
+				<%
+					String error = (String) request.getAttribute("error");
+					if (error != null) {
+				%>
+				<p style="color: red;"><%=error%></p>
+				<%
+					}
+				%>
 
 				<div class="form-group">
-					<label for="username">Username</label> <input type="text"
-						id="username" name="username" class="form-input" placeholder="Enter your username" />
+					<label for="username">Username</label>
+					<input type="text" id="username" name="username" class="form-input"
+						placeholder="Enter your username" value="${param.username}" required />
 				</div>
 
 				<div class="form-group">
 					<label for="password">Password</label>
 					<div class="password-toggle">
 						<input type="password" id="password" name="password" class="form-input"
-							placeholder="Enter your password" /> <span
-							class="password-toggle-icon">👁️</span>
+							placeholder="Enter your password" required />
+						<span class="password-toggle-icon">👁️</span>
 					</div>
 				</div>
 
 				<div class="remember-reset">
 					<div class="remember-me">
-						<input type="checkbox" id="remember" /> <label for="remember">Remember
-							me</label>
+						<input type="checkbox" id="remember" name="remember" ${param.remember != null ? 'checked' : ''} />
+						<label for="remember">Remember me</label>
 					</div>
 					<a href="#" class="forgot-password">Forgot Password?</a>
 				</div>
@@ -116,19 +125,36 @@
 					<li>123 Banking Street, Financial District</li>
 				</ul>
 				<div class="social-links">
-					<a href="#" class="social-icon">📱</a> <a href="#"
-						class="social-icon">📘</a> <a href="#" class="social-icon">🐦</a>
-					<a href="#" class="social-icon">📸</a> <a href="#"
-						class="social-icon">🔗</a>
+					<a href="#" class="social-icon">📱</a>
+					<a href="#" class="social-icon">📘</a>
+					<a href="#" class="social-icon">🐦</a>
+					<a href="#" class="social-icon">📸</a>
+					<a href="#" class="social-icon">🔗</a>
 				</div>
 			</div>
 		</div>
 
 		<div class="footer-bottom">
-			<p>&copy; 2025 SecureBank. All rights reserved.</p>
+			<p>© 2025 SecureBank. All rights reserved.</p>
 			<p>Privacy Policy | Terms of Service | Cookie Policy |
 				Accessibility | Site Map</p>
 		</div>
 	</footer>
+
+	<script>
+		// Toggle password visibility
+		document.querySelectorAll(".password-toggle-icon").forEach((icon) => {
+			icon.addEventListener("click", function () {
+				const passwordInput = this.previousElementSibling;
+				if (passwordInput.type === "password") {
+					passwordInput.type = "text";
+					this.textContent = "🔒";
+				} else {
+					passwordInput.type = "password";
+					this.textContent = "👁️";
+				}
+			});
+		});
+	</script>
 </body>
 </html>
